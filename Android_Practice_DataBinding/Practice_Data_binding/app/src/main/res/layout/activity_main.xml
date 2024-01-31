@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="activity"
+            type="com.twproject.practice_data_binding.MainActivity" />
+        <variable
+            name="site"
+            type="com.twproject.practice_data_binding.model.ObservableData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="button"
+            android:onClick="@{activity::btnClick}"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainRcv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/siteName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{site.site}"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="24dp"
+            tools:text="siteName" />
+
+        <TextView
+            android:id="@+id/testName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{activity.testString}"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="24dp"
+            tools:text="siteName" />
+    </LinearLayout>
+</layout>
