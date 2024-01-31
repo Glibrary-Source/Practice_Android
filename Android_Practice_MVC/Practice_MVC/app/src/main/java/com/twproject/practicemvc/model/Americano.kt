@@ -1,7 +1,6 @@
 package com.twproject.practicemvc.model
 
 class Americano : Beverage(1500, "아메리카노") {
-
     override fun add() {
         ++quantity
     }
