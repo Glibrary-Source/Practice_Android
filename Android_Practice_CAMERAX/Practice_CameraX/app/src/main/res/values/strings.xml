@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Practice_CameraX</string>
+    <string name="permission_required">Camera access is required to display the camera preview.</string>
+    <string name="ok">OK</string>
+    <string name="permission_granted">Permission is granted. You can use the camera now.</string>
 </resources>

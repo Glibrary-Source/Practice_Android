@@ -35,13 +35,16 @@ class MainActivity : AppCompatActivity() {
         binding.goAlbumTv.setOnClickListener {
 
             // 함수 기본코드
-//            verifyStoragePermissions(this)
+            // verifyStoragePermissions(this)
 
-            // 클래스로 관리가능 코드
+            // 클래스로 permission check 관리
+            // PermissionManager.verifyReadImageVideoPermissions(this)
+            // PermissionManager.verifyCameraPermissions(this)
+            // PermissionManager.verifyLocationPermissions(this)
 
-//            requestSinglePermissionLauncher.launch(
-//                Manifest.permission.READ_MEDIA_IMAGES
-//            )
+            // requestSinglePermissionLauncher.launch(
+            //     Manifest.permission.READ_MEDIA_IMAGES
+            // )
 
             val permissionList = arrayOf(
                 Manifest.permission.READ_MEDIA_IMAGES,
@@ -52,10 +55,6 @@ class MainActivity : AppCompatActivity() {
             requestMultiPermissionLauncher.launch(
                 permissionList
             )
-
-            PermissionManager.verifyReadImageVideoPermissions(this)
-            PermissionManager.verifyCameraPermissions(this)
-            PermissionManager.verifyLocationPermissions(this)
         }
     }
 
