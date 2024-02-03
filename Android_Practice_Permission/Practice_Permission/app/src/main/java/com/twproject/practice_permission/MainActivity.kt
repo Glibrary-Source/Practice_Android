@@ -52,9 +52,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
 
-            requestMultiPermissionLauncher.launch(
-                permissionList
-            )
+            requestMultiPermissionLauncher.launch(permissionList)
         }
     }
 
