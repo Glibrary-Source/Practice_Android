@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Practice_RecyclerView</string>
+    <string name="add_item">아이템 추가</string>
+</resources>

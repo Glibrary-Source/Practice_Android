@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.twproject.practice_mediastore.databinding.ActivityMainBinding
 import com.twproject.practice_mediastore.model.Media
 
@@ -18,8 +19,9 @@ const val TAG = "testMediaStore"
 //Permission check 코드는 제외
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var uri: Uri
+    private val imgUriList = mutableListOf<Uri>()
     private var play = false
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -28,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.rcData.layoutManager = LinearLayoutManager(this)
+
         binding.btnImage.setOnClickListener {
             val images = getImages(contentResolver)
             for (img: Media in images) {
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                     TAG, "Image name: ${img.name}, uri: ${img.uri},"
                             + " size: ${img.size}, type ${img.mimeType}"
                 )
+                imgUriList.add(img.uri)
             }
         }
 
@@ -46,6 +51,7 @@ class MainActivity : AppCompatActivity() {
                             + " size: ${video.size}, type ${video.mimeType}"
                 )
             }
+            binding.rcData.adapter = TestAdapter(imgUriList)
         }
 
         binding.btnAudio.setOnClickListener {
@@ -63,19 +69,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnPlayAudio.setOnClickListener {
-
-
             val audioPlayer = AudioPlayer(this)
-            if (play) {
+            play = if (play) {
                 audioPlayer.stopAudio()
-                play = false
+                false
             } else {
                 audioPlayer.playAudio(uri)
-                play = true
+                true
             }
-
         }
-
 
     }
 
