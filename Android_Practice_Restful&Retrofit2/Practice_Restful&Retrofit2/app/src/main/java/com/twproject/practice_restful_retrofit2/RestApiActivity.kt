@@ -36,44 +36,45 @@ class RestApiActivity : AppCompatActivity() {
 
         binding.rcTest.layoutManager = LinearLayoutManager(this)
 
-//        api = retrofit.create(Api::class.java)
+        // api key 로 request
+        api = retrofit.create(Api::class.java)
 
+        // token 으로 request
         movieApi = retrofit.create(MovieApi::class.java)
 
         binding.btnGetData.setOnClickListener {
-
-            getPopularMovies(1)
-
+            getPopularMoviesApiKey(1)
+            getPopularMoviesToken(1)
         }
 
 
     }
 
-//    fun getPopularMovies(page: Int = 1) {
-//        api.getPopularMovies(page = page)
-//            .enqueue(object : Callback<GetMoviesResponse> {
-//                override fun onResponse(
-//                    call: Call<GetMoviesResponse>,
-//                    response: Response<GetMoviesResponse>
-//                ) {
-//                    if (response.isSuccessful) {
-//                        val responseBody = response.body()
-//
-//                        if (responseBody != null) {
-//                            Log.d("Repository", "Movies: ${responseBody.movies}")
-//                        } else {
-//                            Log.d("Repository", "Failed to get response")
-//                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-//                    Log.e("Repository", "onFailure", t)
-//                }
-//            })
-//    }
+    fun getPopularMoviesApiKey(page: Int = 1) {
+        api.getPopularMovies(page = page)
+            .enqueue(object : Callback<GetMoviesResponse> {
+                override fun onResponse(
+                    call: Call<GetMoviesResponse>,
+                    response: Response<GetMoviesResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
 
-    private fun getPopularMovies(page: Int = 1) {
+                        if (responseBody != null) {
+                            Log.d("Repository", "Movies: ${responseBody.movies}")
+                        } else {
+                            Log.d("Repository", "Failed to get response")
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+                    Log.e("Repository", "onFailure", t)
+                }
+            })
+    }
+
+    private fun getPopularMoviesToken(page: Int = 1) {
         movieApi.getPopularMovies(page = page)
             .enqueue(object : Callback<GetMoviesResponse> {
                 override fun onResponse(
