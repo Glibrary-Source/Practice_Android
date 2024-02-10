@@ -17,7 +17,6 @@ class UserAdapter(
     private val mContext: Context,
 ): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         private val swipeView: LinearLayout = itemView.findViewById(R.id.swipe_view)

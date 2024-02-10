@@ -74,6 +74,7 @@ class MainActivity : AppCompatActivity() {
             itemTouchSimpleCallback.removePreviousClamp(binding.recyclerview)
             false
         }
+
     }
 
     private fun setupEvents() {
