@@ -47,7 +47,6 @@ class RestApiActivity : AppCompatActivity() {
             getPopularMoviesToken(1)
         }
 
-
     }
 
     fun getPopularMoviesApiKey(page: Int = 1) {
