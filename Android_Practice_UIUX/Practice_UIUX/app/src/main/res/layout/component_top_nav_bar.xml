@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:padding="4dp"
     android:elevation="4dp"
+    android:background="@color/primaryColor"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageButton
@@ -14,7 +14,7 @@
         android:layout_height="48dp"
         android:layout_margin="4dp"
         android:src="@drawable/icon_arrow_back"
-        android:background="@android:color/transparent"
+        android:backgroundTint="@color/primaryColor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,8 @@
         app:layout_constraintStart_toEndOf="@id/btn_main_top_nav_back"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_main_top_nav_info">
+        app:layout_constraintEnd_toStartOf="@id/btn_main_top_nav_info"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:id="@+id/img_top_nav_profile"
@@ -45,7 +46,7 @@
             android:layout_marginStart="4dp"
             android:text="John Wick"
             android:textSize="32dp"
-            android:textColor="@color/black"
+            android:textColor="@color/primaryTextColor"
             android:layout_gravity="center"/>
     </LinearLayout>
 
@@ -55,7 +56,7 @@
         android:layout_height="48dp"
         android:layout_margin="4dp"
         android:src="@drawable/icon_info_white"
-        android:background="@android:color/transparent"
+        android:backgroundTint="@color/primaryColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

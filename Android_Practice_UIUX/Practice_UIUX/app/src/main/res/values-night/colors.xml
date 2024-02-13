@@ -2,10 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primaryColor">#A4C3B2</color>
-    <color name="primaryTextColor">@android:color/black</color>
-    <color name="primaryIconColor">#889298</color>
-    <color name="primaryDarkColor">@android:color/holo_green_dark</color>
+    <color name="primaryColor">#6c757d</color>
+    <color name="primaryTextColor">@android:color/white</color>
+    <color name="primaryIconColor">@android:color/white</color>
+    <color name="primaryDarkColor">#f5cb5c</color>
 
     <color name="md_theme_primary">#1E6A4F</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>

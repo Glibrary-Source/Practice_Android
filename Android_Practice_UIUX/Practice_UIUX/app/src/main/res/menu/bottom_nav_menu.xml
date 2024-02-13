@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:title="Home"
+        android:enabled="true"
+        android:icon="@drawable/icon_home_black" />
+    <item
+        android:id="@+id/menu_favorite"
+        android:title="Detail"
+        android:enabled="true"
+        android:icon="@drawable/icon_favorite_black" />
+    <item
+        android:id="@+id/menu_email"
+        android:title="Email"
+        android:enabled="true"
+        android:icon="@drawable/icon_email_black" />
+</menu>

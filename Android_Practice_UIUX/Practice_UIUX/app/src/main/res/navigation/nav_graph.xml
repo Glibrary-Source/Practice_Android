@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentMainPage">
+    app:startDestination="@id/menu_home">
 
     <fragment
-        android:id="@+id/fragmentDetailPage"
-        android:name="com.twproject.practice_uiux.view.detail.FragmentDetailPage"
-        android:label="fragment__detail__page"
-        tools:layout="@layout/fragment__detail__page" />
-    <fragment
-        android:id="@+id/fragmentMainPage"
+        android:id="@+id/menu_home"
         android:name="com.twproject.practice_uiux.view.mainpage.FragmentMainPage"
         android:label="fragment_main_page"
-        tools:layout="@layout/fragment_main_page" >
-        <action
-            android:id="@+id/action_fragmentMainPage_to_fragmentDetailPage"
-            app:destination="@id/fragmentDetailPage"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"/>
-    </fragment>
+        tools:layout="@layout/fragment_main_page" />
 
+    <fragment
+        android:id="@+id/menu_favorite"
+        android:name="com.twproject.practice_uiux.view.detail.FragmentDetailPage"
+        android:label="fragment_detail_page"
+        tools:layout="@layout/fragment_detail_page" />
+
+    <fragment
+        android:id="@+id/menu_email"
+        android:name="com.twproject.practice_uiux.view.email.FragmentEmailPage"
+        android:label="fragment_email_page"
+        tools:layout="@layout/fragment_email_page" />
 </navigation>

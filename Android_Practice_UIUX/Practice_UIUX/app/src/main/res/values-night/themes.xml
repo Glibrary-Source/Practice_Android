@@ -1,7 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Practice_UIUX" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="android:statusBarColor">@color/primaryColor</item>
+        <!--    상태바 text등 색을 검정색으로 바꿔줌(상태바가 힌색일때 보이게하기위해)-->
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <style name="Theme.Practice_UIUX" parent="Base.Theme.Practice_UIUX" />
+
+    <style name="noStateTheme" parent="Theme.Material3.Light.NoActionBar">
+        <!--     windowTranslucentStatus, windowTranslucentNavigation 상태바와 네비바를 반투명으로 만듬-->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <!--     풀스크린모드 상태바를 제거함   -->
+        <!--        <item name="android:windowFullscreen">true</item>-->
     </style>
 </resources>
