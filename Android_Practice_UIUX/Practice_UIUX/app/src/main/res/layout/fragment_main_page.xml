@@ -4,24 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.mainpage.FragmentMainPage">
+    tools:context=".view.viewpager_tablayout.FragmentMainPage">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:elevation="8dp"
+        android:background="@color/white"
 
-        android:background="@color/primaryColor"
         app:tabRippleColor="@color/primaryDarkColor"
         app:tabGravity="fill"
 
-        app:tabIconTint="@color/white"
-        app:tabTextColor="@color/white"
+        app:tabIconTint="@color/primaryIconColor"
+        app:tabTextColor="@color/primaryTextColor"
 
-        app:tabIndicatorColor="@color/primaryDarkColor"
+        app:tabIndicatorColor="@color/primaryTextColor"
         app:tabIndicatorGravity="bottom"
-        app:tabIndicatorHeight="5dp"
-
+        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorFullWidth="true"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,15 +37,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tab"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rc_fragment_main_img_list"-->
-<!--        android:padding="8dp"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tab"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

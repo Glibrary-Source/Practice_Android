@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    // bottom navigationbar 이동 조정
+    // bottom navigationBar 이동 조정
     private fun setBottomNav() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

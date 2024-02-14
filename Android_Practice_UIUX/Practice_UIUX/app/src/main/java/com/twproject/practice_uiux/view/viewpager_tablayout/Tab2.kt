@@ -1,4 +1,4 @@
-package com.twproject.practice_uiux.view.viewpager
+package com.twproject.practice_uiux.view.viewpager_tablayout
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,4 +16,5 @@ class Tab2 : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tab2, container, false)
     }
+
 }

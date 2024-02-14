@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/menu_home"
-        android:name="com.twproject.practice_uiux.view.mainpage.FragmentMainPage"
+        android:name="com.twproject.practice_uiux.view.viewpager_tablayout.FragmentMainPage"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" />
 

@@ -1,4 +1,4 @@
-package com.twproject.practice_uiux.view.viewpager
+package com.twproject.practice_uiux.view.viewpager_tablayout
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

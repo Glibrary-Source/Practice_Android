@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.viewpager.Tab1">
+    tools:context=".view.viewpager_tablayout.Tab1">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_fragment_main_img_list"
+        android:padding="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Tab1" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
