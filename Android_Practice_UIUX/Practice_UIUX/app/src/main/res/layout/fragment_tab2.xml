@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.viewpager_tablayout.Tab2">
+    tools:context=".view.component_viewpager_tablayout.Tab2">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <EditText
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Tab2" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

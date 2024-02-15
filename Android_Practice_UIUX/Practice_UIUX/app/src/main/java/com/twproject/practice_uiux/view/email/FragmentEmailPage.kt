@@ -9,7 +9,6 @@ import com.twproject.practice_uiux.R
 
 class FragmentEmailPage : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -13,10 +13,6 @@
         android:theme="@style/Theme.Practice_UIUX"
         tools:targetApi="31">
         <activity
-            android:name=".view.detail.DetailPageActivity"
-            android:theme="@style/noStateTheme"
-            android:exported="false" />
-        <activity
             android:name=".view.mainpage.MainActivity"
             android:theme="@style/Base.Theme.Practice_UIUX"
             android:exported="true">

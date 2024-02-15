@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.twproject.practice_uiux.R
@@ -14,7 +15,7 @@ class ImageListAdapter(
     private val imageList: List<Drawable?>
 ) : RecyclerView.Adapter<ImageListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView = view.findViewById(R.id.img_item_main)
     }
 
@@ -29,6 +30,7 @@ class ImageListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = imageList[position]
+//        holder.view.animation = AnimationUtils.loadAnimation(holder.view.context, R.anim.list_item_animation)
         holder.imageView.setImageDrawable(item)
     }
 }

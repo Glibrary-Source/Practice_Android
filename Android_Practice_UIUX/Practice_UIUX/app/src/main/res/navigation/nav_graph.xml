@@ -7,19 +7,24 @@
 
     <fragment
         android:id="@+id/menu_home"
-        android:name="com.twproject.practice_uiux.view.viewpager_tablayout.FragmentMainPage"
+        android:name="com.twproject.practice_uiux.view.component_viewpager_tablayout.FragmentMainPage"
         android:label="fragment_main_page"
         tools:layout="@layout/fragment_main_page" />
 
     <fragment
-        android:id="@+id/menu_favorite"
-        android:name="com.twproject.practice_uiux.view.detail.FragmentDetailPage"
+        android:id="@+id/test"
+        android:name="com.twproject.practice_uiux.view.component_bottom_modal_sheet.FragmentBottomSheet"
         android:label="fragment_detail_page"
-        tools:layout="@layout/fragment_detail_page" />
+        tools:layout="@layout/fragment_bottom_sheet" />
 
     <fragment
         android:id="@+id/menu_email"
         android:name="com.twproject.practice_uiux.view.email.FragmentEmailPage"
         android:label="fragment_email_page"
         tools:layout="@layout/fragment_email_page" />
+    <fragment
+        android:id="@+id/menu_favorite"
+        android:name="com.twproject.practice_uiux.view.component_bottom_modal_sheet.FragmentPersistentBottomSheet"
+        android:label="fragment_persistent_bottom_sheet"
+        tools:layout="@layout/fragment_persistent_bottom_sheet" />
 </navigation>
