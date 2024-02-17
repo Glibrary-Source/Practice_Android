@@ -32,7 +32,7 @@
 
     <!-- Persistent Bottom Sheet -->
     <!-- behavior 속성을 여기서 적용합니다 -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/persistent_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,16 +40,25 @@
         android:orientation="vertical"
         android:padding="16dp"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="10dp"
+        app:behavior_peekHeight="20dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <!-- persistent bottom sheet의 Content -->
         <TextView
+            android:id="@+id/bottom_sheet_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="🔼 Pull me up! 🔼"
+            android:text="Filter plants"
+            android:textColor="@color/primaryTextColor"
             android:textSize="24sp"
-            android:gravity="center"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/bottom_sheet_title"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -59,5 +68,5 @@
             android:paddingTop="100dp"
             android:gravity="center"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
