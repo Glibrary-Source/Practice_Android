@@ -6,6 +6,7 @@
     <color name="primaryTextColor">@android:color/black</color>
     <color name="primaryIconColor">#889298</color>
     <color name="primaryDarkColor">@android:color/holo_green_dark</color>
+    <color name="greenPlantsColor">#40916c</color>
 
     <color name="md_theme_primary">#1E6A4F</color>
     <color name="md_theme_onPrimary">#FFFFFF</color>

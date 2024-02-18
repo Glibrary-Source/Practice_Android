@@ -32,10 +32,10 @@
 
     <!-- Persistent Bottom Sheet -->
     <!-- behavior 속성을 여기서 적용합니다 -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/persistent_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#ebebeb"
         android:orientation="vertical"
         android:padding="16dp"
@@ -43,30 +43,44 @@
         app:behavior_peekHeight="20dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <!-- persistent bottom sheet의 Content -->
-        <TextView
-            android:id="@+id/bottom_sheet_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Filter plants"
-            android:textColor="@color/primaryTextColor"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="match_parent">
 
-        <Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/bottom_sheet_title"
-            app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/bottom_sheet_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Filter plants"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Persistent Bottom Sheet"
-            android:textSize="24sp"
-            android:paddingTop="100dp"
-            android:gravity="center"/>
+            <Spinner
+                android:id="@+id/bottom_sheet_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_title"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- persistent bottom sheet의 Content -->
+            <TextView
+                android:id="@+id/bottom_sheet_types"
+                android:text="Plant types"
+                android:textSize="18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/greenPlantsColor"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_spinner"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Entry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_types"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
