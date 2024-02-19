@@ -36,26 +36,44 @@
         android:id="@+id/persistent_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ebebeb"
+        android:background="@android:color/transparent"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:paddingTop="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:elevation="20dp"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="20dp"
+        app:behavior_peekHeight="28dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:clipToOutline="true"
+            android:background="@drawable/component_bottom_sheet">
+
+            <View
+                android:id="@+id/drag_handle"
+                android:layout_width="32dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/component_bottom_sheet_handle"
+                android:alpha="0.4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
             <TextView
                 android:id="@+id/bottom_sheet_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Filter plants"
-                android:textColor="@color/primaryTextColor"
+                android:textColor="@color/greenPlantsDarkColor"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/drag_handle"/>
 
             <Spinner
                 android:id="@+id/bottom_sheet_spinner"
@@ -75,12 +93,57 @@
                 app:layout_constraintTop_toBottomOf="@id/bottom_sheet_spinner"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <com.google.android.material.chip.Chip
-                style="@style/Widget.MaterialComponents.Chip.Entry"
-                android:layout_width="wrap_content"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/bottom_sheet_type_group"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_types"/>
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_types">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tropical"
+                    app:ensureMinTouchTargetSize="true"
+                    android:textColor="@color/greenPlantsDarkColor"
+                    app:closeIconEnabled="true" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Succulent"
+                    app:ensureMinTouchTargetSize="true"
+                    android:textColor="@color/greenPlantsDarkColor"
+                    app:closeIconEnabled="true"/>
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/bottom_sheet_type_group2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/bottom_sheet_type_group"
+                app:chipSpacingHorizontal="4dp">
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dracaena"
+                    android:textColor="@color/greenPlantsDarkColor" />
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ferns"
+                    android:textColor="@color/greenPlantsDarkColor"/>
+
+                <com.google.android.material.chip.Chip
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dracaena"
+                    android:textColor="@color/greenPlantsDarkColor"/>
+
+            </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
