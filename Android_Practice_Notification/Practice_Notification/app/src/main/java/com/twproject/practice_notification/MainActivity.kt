@@ -2,12 +2,12 @@ package com.twproject.practice_notification
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -17,14 +17,18 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import com.twproject.practice_notification.databinding.ActivityMainBinding
+import com.twproject.practice_notification.messaging.MyFirebaseMessagingService
 
 const val TAG = "testGL"
 
@@ -56,12 +60,49 @@ class MainActivity : AppCompatActivity() {
 
         googleInit()
 
-
         binding.btnLogin.setOnClickListener {
             val signInIntent = mGoogleSignInClient.signInIntent
             startGoogleLoginForResult.launch(signInIntent)
         }
-//        permission()
+        permission()
+
+        MyFirebaseMessagingService().getFirebaseToken()
+
+        /** PostNotification 대응 */
+        checkAppPushNotification()
+
+        //사용안하면 삭제하기
+        /** DynamicLink 수신확인 */
+        initDynamicLink()
+    }
+
+    private fun checkAppPushNotification() {
+        //Android 13 이상 && 푸시권한 없음
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)) {
+            // 푸쉬 권한 없음
+            permissionPostNotification.launch(Manifest.permission.POST_NOTIFICATIONS)
+            return
+        }
+    }
+
+    /** 권한 요청 */
+    private val permissionPostNotification = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            //권한 허용
+        } else {
+            //권한 비허용
+        }
+    }
+
+    private fun initDynamicLink() {
+        val dynamicLinkData = intent.extras
+        if (dynamicLinkData != null) {
+            var dataStr = "DynamicLink 수신받은 값\n"
+            for (key in dynamicLinkData.keySet()) {
+                dataStr += "key: $key / value: ${dynamicLinkData.getString(key)}\n"
+            }
+        }
     }
 
     private fun googleInit() {
@@ -82,8 +123,9 @@ class MainActivity : AppCompatActivity() {
                         try {
                             // Google Sign In was successful, authenticate with Firebase
                             val account = task.getResult(ApiException::class.java)!!
-                            Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                            Log.d(TAG, "firebaseAuthWithGoogle:" + account.id +"//${account.idToken}")
                             firebaseAuthWithGoogle(account.idToken!!)
+
                         } catch (e: ApiException) {
                             // Google Sign In failed, update UI appropriately
                             Log.w(TAG, "Google sign in failed", e)
@@ -105,6 +147,7 @@ class MainActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
+
                     updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -144,6 +187,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 기본 퍼미션 체크 코드
     private fun permission() {
         val permissionList = arrayOf(
             Manifest.permission.POST_NOTIFICATIONS,
@@ -159,6 +203,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // android 자체 notification (background 실행 될때만 적용)
     @SuppressLint("MissingPermission")
     private fun notification() {
         val intent = Intent(this, MainActivity::class.java).apply {

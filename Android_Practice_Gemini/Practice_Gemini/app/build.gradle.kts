@@ -1,21 +1,28 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
+    id("kotlin-kapt")
 }
 
+val localProperties = Properties()
+localProperties.load(project.rootProject.file("local.properties").inputStream())
+
 android {
-    namespace = "com.twproject.practice_notification"
+    namespace = "com.twproject.practice_gemini"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.twproject.practice_notification"
+        applicationId = "com.twproject.practice_gemini"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "geminikey", localProperties.getProperty("geminikey"))
     }
 
     buildTypes {
@@ -34,6 +41,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        buildConfig = true
+    }
     viewBinding {
         enable = true
     }
@@ -49,19 +59,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    // firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
-    implementation("com.google.firebase:firebase-analytics")
-
-    // firestore
-    implementation("com.google.firebase:firebase-firestore")
-
-    // FCM
-    implementation("com.google.firebase:firebase-messaging:23.4.1")
-    implementation("com.google.firebase:firebase-messaging-ktx")
-
-    // auth
-    implementation("com.google.firebase:firebase-auth:22.3.1")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
-
+    // Gemini
+    implementation("com.google.ai.client.generativeai:generativeai:0.1.2")
 }
