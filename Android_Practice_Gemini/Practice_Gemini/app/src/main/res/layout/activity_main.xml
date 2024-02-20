@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/linear_edit" />
+
     <TextView
         android:id="@+id/text_user"
         android:layout_width="match_parent"
@@ -13,6 +22,7 @@
         android:layout_margin="8dp"
         android:text="유저"
         android:textSize="18dp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +33,7 @@
         android:layout_margin="8dp"
         android:text="ai"
         android:textSize="18dp"
+        android:visibility="gone"
         android:scrollbars="vertical"
         android:maxLines="20"
         android:textColor="@android:color/holo_blue_light"
@@ -30,11 +41,13 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linear_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="8dp"
         android:weightSum="10"
+        app:layout_constraintTop_toBottomOf="@id/rc_chat"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -52,5 +65,4 @@
             android:layout_height="wrap_content" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

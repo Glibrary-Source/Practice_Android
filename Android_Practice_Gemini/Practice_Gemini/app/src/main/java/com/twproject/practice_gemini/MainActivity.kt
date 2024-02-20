@@ -7,8 +7,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
+import com.twproject.adapter.ChatListAdapter
 import com.twproject.practice_gemini.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private var prompt = ""
     private lateinit var binding: ActivityMainBinding
+    private lateinit var chatRcView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,17 +32,25 @@ class MainActivity : AppCompatActivity() {
         setEditText()
         binding.textGemini.movementMethod = ScrollingMovementMethod()
 
-        geminiTextOnly()
+//        geminiTextOnly()
 //        geminiChat()
 //        streamChatOnlyText()
+
+        chatRcView = binding.rcChat
+
+        geminiChat()
+
     }
 
+
+    // edit text 설정
     private fun setEditText() {
         binding.editChat.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 prompt = binding.editChat.text.toString()
             }
+
             override fun afterTextChanged(p0: Editable?) {}
         })
     }
@@ -103,9 +114,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 대화 형식(history)
     private fun geminiChat() {
-
         val generativeModel = GenerativeModel(
             // Use a model that's applicable for your use case (see "Implement basic use cases" below)
             modelName = "gemini-pro",
@@ -115,28 +124,64 @@ class MainActivity : AppCompatActivity() {
 
         val chat = generativeModel.startChat(
             history = listOf(
-
+                content(role = "user") { text("지금부터 너는 부동산 중개인이라고 생각하고 대화해줘") },
+                content(role = "model") { text("알겠습니다.") },
             )
         )
 
+        val chatHistory = mutableListOf<List<String>>()
+
         binding.btnSendMsg.setOnClickListener {
 
-            binding.textUser.text = prompt
+            chatHistory.add(listOf("당신", prompt))
+            chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
 
             CoroutineScope(IO).launch {
                 val response = chat.sendMessage(prompt)
+                val aiResponse = response.text ?: "no return"
+                chatHistory.add(listOf("Gemini", aiResponse))
 
                 withContext(Main) {
-                    try {
-                        binding.textGemini.text = response.text.toString()
-                    } catch (e: Exception) {
-                        binding.textGemini.text = "나쁜말"
-                    }
+                    chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
                 }
             }
+
             binding.editChat.text.clear()
         }
     }
+
+    // 대화 형식(history)
+//    private fun geminiChat() {
+//        val generativeModel = GenerativeModel(
+//            // Use a model that's applicable for your use case (see "Implement basic use cases" below)
+//            modelName = "gemini-pro",
+//            // Access your API key as a Build Configuration variable (see "Set up your API key" above)
+//            apiKey = BuildConfig.geminikey
+//        )
+//
+//        val chat = generativeModel.startChat(
+//            history = listOf(
+//                content(role = "user") { text("지금부터 너는 부동산 중개인이라고 생각하고 대화해줘") },
+//                content(role = "model") { text("알겠습니다.") },
+//            )
+//        )
+//
+//        val chatHistory = mutableListOf<Map<String, String>>()
+//
+//        binding.btnSendMsg.setOnClickListener {
+//
+//            binding.textUser.text = prompt
+//
+//            CoroutineScope(IO).launch {
+//                val response = chat.sendMessage(prompt)
+//
+//                withContext(Main) {
+//                    binding.textGemini.text = response.text.toString()
+//                }
+//            }
+//            binding.editChat.text.clear()
+//        }
+//    }
 
     // 스트리밍 채팅(이미지 포함) 사용
     private fun streamChatImage() {
@@ -203,7 +248,6 @@ class MainActivity : AppCompatActivity() {
             binding.editChat.text.clear()
         }
     }
-
 
 
 }
