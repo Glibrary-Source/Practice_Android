@@ -9,7 +9,11 @@ import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.google.ai.client.generativeai.GenerativeModel
+import com.google.ai.client.generativeai.type.BlockThreshold
+import com.google.ai.client.generativeai.type.HarmCategory
+import com.google.ai.client.generativeai.type.SafetySetting
 import com.google.ai.client.generativeai.type.content
+import com.google.ai.client.generativeai.type.generationConfig
 import com.twproject.adapter.ChatListAdapter
 import com.twproject.practice_gemini.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +22,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+const val TAG = "Gemini"
 class MainActivity : AppCompatActivity() {
 
     private var prompt = ""
@@ -32,13 +37,14 @@ class MainActivity : AppCompatActivity() {
         setEditText()
         binding.textGemini.movementMethod = ScrollingMovementMethod()
 
-//        geminiTextOnly()
-//        geminiChat()
-//        streamChatOnlyText()
-
         chatRcView = binding.rcChat
 
-        geminiChat()
+//        geminiTextOnly()
+//        geminiImageView()
+//        geminiChat()
+//        streamChatOnlyText()
+//        limitOption()
+        harmfulSetOption()
 
     }
 
@@ -57,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
     // text 전용
     private fun geminiTextOnly() {
+
         val generativeModel = GenerativeModel(
             // Use a model that's applicable for your use case (see "Implement basic use cases" below)
             modelName = "gemini-pro",
@@ -64,16 +71,21 @@ class MainActivity : AppCompatActivity() {
             apiKey = BuildConfig.geminikey
         )
 
+        val chatHistory = mutableListOf<List<String>>()
+
         binding.btnSendMsg.setOnClickListener {
 
-            binding.textUser.text = prompt
+            chatHistory.add(listOf("당신", prompt))
+            chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
 
             CoroutineScope(IO).launch {
 
                 val response = generativeModel.generateContent(prompt)
+                val responseText = response.text.toString()
+                chatHistory.add(listOf("Gemini", responseText))
 
                 withContext(Main) {
-                    binding.textGemini.text = response.text.toString()
+                    chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
                 }
             }
             binding.editChat.text.clear()
@@ -91,26 +103,33 @@ class MainActivity : AppCompatActivity() {
         )
 
         val image1 = BitmapFactory.decodeResource(this.resources, R.drawable.flower)
-        val image2 = BitmapFactory.decodeResource(this.resources, R.drawable.flower)
+        val image2 = BitmapFactory.decodeResource(this.resources, R.drawable.flower2)
 
-        val inputContent = content {
-            image(image1)
-            image(image2)
-            prompt
-        }
+
+        val chatHistory = mutableListOf<List<String>>()
+
         binding.btnSendMsg.setOnClickListener {
 
-            binding.textUser.text = prompt
+            val inputContent = content {
+                image(image1)
+                image(image2)
+                text(prompt)
+            }
+
+            chatHistory.add(listOf("당신", prompt))
+            chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
 
             CoroutineScope(IO).launch {
                 val response = generativeModel.generateContent(inputContent)
+                val responseText = response.text.toString()
+                chatHistory.add(listOf("Gemini", responseText))
+
                 withContext(Main) {
-                    binding.textGemini.text = response.text.toString()
+                    chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
                 }
             }
 
             binding.editChat.text.clear()
-
         }
     }
 
@@ -150,41 +169,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 대화 형식(history)
-//    private fun geminiChat() {
-//        val generativeModel = GenerativeModel(
-//            // Use a model that's applicable for your use case (see "Implement basic use cases" below)
-//            modelName = "gemini-pro",
-//            // Access your API key as a Build Configuration variable (see "Set up your API key" above)
-//            apiKey = BuildConfig.geminikey
-//        )
-//
-//        val chat = generativeModel.startChat(
-//            history = listOf(
-//                content(role = "user") { text("지금부터 너는 부동산 중개인이라고 생각하고 대화해줘") },
-//                content(role = "model") { text("알겠습니다.") },
-//            )
-//        )
-//
-//        val chatHistory = mutableListOf<Map<String, String>>()
-//
-//        binding.btnSendMsg.setOnClickListener {
-//
-//            binding.textUser.text = prompt
-//
-//            CoroutineScope(IO).launch {
-//                val response = chat.sendMessage(prompt)
-//
-//                withContext(Main) {
-//                    binding.textGemini.text = response.text.toString()
-//                }
-//            }
-//            binding.editChat.text.clear()
-//        }
-//    }
-
     // 스트리밍 채팅(이미지 포함) 사용
     private fun streamChatImage() {
+
         val generativeModel = GenerativeModel(
             // For text-and-image input (multimodal), use the gemini-pro-vision model
             modelName = "gemini-pro-vision",
@@ -198,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         val inputContent = content {
             image(image1)
             image(image2)
-            prompt
+            text(prompt)
         }
 
         binding.btnSendMsg.setOnClickListener {
@@ -217,10 +204,12 @@ class MainActivity : AppCompatActivity() {
             }
             binding.editChat.text.clear()
         }
+
     }
 
     // 스트리밍 채팅 온리 텍스트
     private fun streamChatOnlyText() {
+
         val generativeModel = GenerativeModel(
             // For text-and-image input (multimodal), use the gemini-pro-vision model
             modelName = "gemini-pro",
@@ -228,9 +217,7 @@ class MainActivity : AppCompatActivity() {
             apiKey = BuildConfig.geminikey
         )
 
-        val inputContentText = content {
-            prompt
-        }
+        val inputContentText = content { prompt }
 
         binding.btnSendMsg.setOnClickListener {
 
@@ -246,8 +233,105 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             binding.editChat.text.clear()
+
+        }
+
+    }
+
+    // 콘텐츠 생성 제어
+    private fun limitOption() {
+
+        val config = generationConfig {
+            temperature = 0.45f
+            topK = 16
+            topP = 0.1f
+            maxOutputTokens = 200
+            stopSequences = listOf("red")
+        }
+
+        val generativeModel = GenerativeModel(
+            // 모델은 알맞게 변경
+            modelName = "gemini-pro-vision",
+            apiKey = BuildConfig.geminikey,
+            generationConfig = config,
+            safetySettings = listOf(
+                SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, BlockThreshold.NONE)
+            )
+        )
+
+        val image1 = BitmapFactory.decodeResource(this.resources, R.drawable.leonardo_dicaprio_2010)
+
+        val chatHistory = mutableListOf<List<String>>()
+
+        binding.btnSendMsg.setOnClickListener {
+
+            val inputContent = content {
+                image(image1)
+                text(prompt)
+            }
+
+            chatHistory.add(listOf("당신", prompt))
+            chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
+
+            CoroutineScope(IO).launch {
+                val response = generativeModel.generateContent(inputContent)
+                val responseText = response.text.toString()
+                chatHistory.add(listOf("Gemini", responseText))
+
+                withContext(Main) {
+                    chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
+                }
+            }
+
+            binding.editChat.text.clear()
         }
     }
 
+    // 위험물 판단
+    private fun harmfulSetOption() {
+        val config = generationConfig {
+            temperature = 1f
+            topK = 16
+            topP = 0.1f
+            stopSequences = listOf("red")
+        }
+
+        val generativeModel = GenerativeModel(
+            // 모델은 알맞게 변경
+            modelName = "gemini-pro",
+            apiKey = BuildConfig.geminikey,
+            generationConfig = config,
+            safetySettings = listOf(
+                SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, BlockThreshold.NONE),
+                SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.NONE),
+                SafetySetting(HarmCategory.DANGEROUS_CONTENT, BlockThreshold.NONE),
+                SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.NONE),
+            )
+        )
+
+        val chatHistory = mutableListOf<List<String>>()
+
+        binding.btnSendMsg.setOnClickListener {
+
+            chatHistory.add(listOf("당신", prompt))
+            chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
+
+            CoroutineScope(IO).launch {
+                try{
+                    val response = generativeModel.generateContent(prompt)
+                    val responseText = response.text.toString()
+                    chatHistory.add(listOf("Gemini", responseText))
+
+                    withContext(Main) {
+                        chatRcView.adapter = ChatListAdapter(this@MainActivity, chatHistory)
+                    }
+                } catch (e: Exception) {
+                    Log.e("GeminiTest", e.message.toString())
+                }
+            }
+
+            binding.editChat.text.clear()
+        }
+    }
 
 }
