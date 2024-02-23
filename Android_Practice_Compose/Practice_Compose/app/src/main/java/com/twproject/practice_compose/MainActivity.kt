@@ -28,14 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import com.twproject.practice_compose.data.SampleData
 import com.twproject.practice_compose.ui.theme.Practice_ComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,7 +46,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-data class Message(val author: String, val body: String)
+data class Message(val id: String, val body: String)
 
 @Composable
 fun MessageCard(msg: Message) {
@@ -75,7 +72,7 @@ fun MessageCard(msg: Message) {
 
         Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             Text(
-                text = msg.author,
+                text = msg.id,
                 color = MaterialTheme.colorScheme.outlineVariant,
                 style = MaterialTheme.typography.titleMedium
             )

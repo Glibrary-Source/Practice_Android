@@ -1,4 +1,6 @@
-package com.twproject.practice_compose
+package com.twproject.practice_compose.data
+
+import com.twproject.practice_compose.Message
 
 object SampleData {
     // Sample conversation data
