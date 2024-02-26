@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import com.twproject.practice_compose.component.Component
 import com.twproject.practice_compose.ui.theme.Practice_ComposeTheme
@@ -19,7 +20,13 @@ class PracticeActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Component.MyScreen()
+//                    Component.MyScreen(
+//                        Component.UiState(),
+//                        SnackbarHostState()
+//                    )
+//                    Component.Kotlinkorldscreen()
+//                    Component.TextFieldExample()
+                    Component.HomeScreen()
                 }
             }
         }
