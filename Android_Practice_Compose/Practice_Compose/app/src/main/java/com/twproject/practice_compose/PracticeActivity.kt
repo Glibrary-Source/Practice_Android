@@ -26,7 +26,12 @@ class PracticeActivity : ComponentActivity() {
 //                    )
 //                    Component.Kotlinkorldscreen()
 //                    Component.TextFieldExample()
-                    Component.HomeScreen()
+//                    Component.HomeScreen()
+//                    Component.StepMainView()
+//                    Component.StudyScreen()
+//                    Component.HelloContent()
+//                    Component.CityScreen()
+                    Component.ConversationScreen()
                 }
             }
         }

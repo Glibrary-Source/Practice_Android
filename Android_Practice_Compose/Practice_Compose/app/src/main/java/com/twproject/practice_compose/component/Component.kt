@@ -4,18 +4,29 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.media.Image
 import android.os.Message
+import android.os.Parcelable
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
@@ -38,21 +49,30 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.twproject.practice_compose.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
+import java.sql.Time
+import java.time.LocalDateTime
 
 object Component {
 
@@ -274,6 +294,7 @@ object Component {
     }
 
     private const val SplashWaitTimeMillis = 1000L
+
     @Composable
     fun LandingScreen(onTimeout: () -> Unit) {
 
@@ -320,12 +341,12 @@ object Component {
     // rememberUpdatedState를 사용했을때
     @Composable
     fun TextFieldExample() {
-        var text by remember { mutableStateOf("zzz")}
+        var text by remember { mutableStateOf("zzz") }
 
         Column(modifier = Modifier.padding(16.dp)) {
             OutlinedTextField(
                 value = text,
-                onValueChange = { text = it}
+                onValueChange = { text = it }
             )
             TextData(input = text)
         }
@@ -387,7 +408,7 @@ object Component {
             Button(onClick = { isVisible = true }) {
                 Text(text = "버튼 클릭")
             }
-            if(isVisible) {
+            if (isVisible) {
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxSize()
@@ -430,8 +451,11 @@ object Component {
 
     // [START_EXCLUDE silent]
     class ImageRepository {
-        fun load(url: String): Image? { return null }
+        fun load(url: String): Image? {
+            return null
+        }
     }
+
     sealed class Result<out T> {
         object Loading : Result<Nothing>()
         object Error : Result<Nothing>()
@@ -474,9 +498,242 @@ object Component {
     // derivedStateOf...
 
 
+    @Composable
+    fun StepMainView() {
+        val paddingState = remember { mutableStateOf(8.dp) }
 
+        Column {
+            Button(onClick = {
+                paddingState.value = 20.dp
+            }) {
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = "Padding Change"
+                )
+            }
+            Text(
+                text = "Hello",
+                modifier = Modifier.padding(paddingState.value)
+            )
+        }
+    }
+
+
+    @Composable
+    private fun OptimizeStateReadsBefore() {
+        // [START android_compose_phases_optimize_state_reads_before]
+        Box {
+            val listState = rememberLazyListState()
+
+            Image(
+                // [START_EXCLUDE]
+                painterResource(id = android.R.drawable.star_on),
+                contentDescription = null,
+                // [END_EXCLUDE]
+                // Non-optimal implementation!
+                Modifier.offset(
+                    with(LocalDensity.current) {
+                        // State read of firstVisibleItemScrollOffset in composition
+                        (listState.firstVisibleItemScrollOffset / 2).toDp()
+                    }
+                )
+            )
+
+            LazyColumn(state = listState) {
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        }
+        // [END android_compose_phases_optimize_state_reads_before]
+    }
+
+    @Composable
+    fun StudyScreen() {
+        val scroll = rememberScrollState()
+        Title { scroll.value }
+        Body(scroll)
+    }
+
+    @Composable
+    fun Title(value: () -> Int) {
+        Text(modifier = Modifier.height(value().dp), text = "title")
+        Log.d("testCompose", "리컴포즈")
+    }
+
+    @Composable
+    fun Body(scroll: ScrollState) {
+        Column(
+            modifier = Modifier.verticalScroll(scroll)
+        ) {
+            for (i in 1..20) {
+                Text(modifier = Modifier.height(50.dp), text = "test1")
+            }
+        }
+    }
+
+    @Composable
+    fun HelloScreen() {
+        var name by rememberSaveable { mutableStateOf("") }
+
+        HelloContent(name, onNameChange = { name = it })
+    }
+
+    @Composable
+    fun HelloContent(name: String, onNameChange: (String) -> Unit) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Hello! $name",
+                modifier = Modifier.padding(bottom = 8.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            OutlinedTextField(
+                value = name,
+                onValueChange = onNameChange,
+                label = { Text("Name") }
+            )
+        }
+    }
+
+//    @Parcelize
+//    data class City(val name: String, val country: String) : Parcelable
+//
+//    @Composable
+//    fun CityScreen() {
+//        var selectedCity = rememberSaveable {
+//            mutableStateOf(City("Madrid", "Spain"))
+//        }
+//
+//        Column(modifier = Modifier.padding(16.dp)) {
+//            Button(onClick = {
+//                selectedCity.value = City("Madrid", "Korea")
+//            }) {
+//                Text(text = "Test Parcelize")
+//            }
+//            Text(text = "Test Parcelize ${selectedCity.value.country}")
+//        }
+//    }
+
+    @Composable
+    fun ChatBubble(
+        message: String
+    ) {
+        var showDetails by rememberSaveable {
+            mutableStateOf(false)
+        }
+
+        Column(modifier = Modifier.padding(16.dp)) {
+            ClickableText(
+                text = AnnotatedString("message"),
+                onClick = { showDetails = !showDetails })
+
+            if (showDetails) {
+                Text("time stamp")
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    val messages = listOf(
+        Message("User", "body", LocalDateTime.now().toString()),
+        Message("User2", "body", LocalDateTime.now().toString()),
+        Message("User3", "body", LocalDateTime.now().toString()),
+        Message("User4", "body", LocalDateTime.now().toString()),
+        Message("User5", "body", LocalDateTime.now().toString()),
+        Message("User6", "body", LocalDateTime.now().toString()),
+        Message("User7", "body", LocalDateTime.now().toString()),
+        Message("User8", "body", LocalDateTime.now().toString()),
+        Message("User9", "body", LocalDateTime.now().toString()),
+        Message("User10", "body", LocalDateTime.now().toString()),
+        Message("User11", "body", LocalDateTime.now().toString()),
+        Message("User12", "body", LocalDateTime.now().toString()),
+        Message("User13", "body", LocalDateTime.now().toString()),
+        Message("User14", "body", LocalDateTime.now().toString()),
+        Message("User15", "body", LocalDateTime.now().toString()),
+        Message("User16", "body", LocalDateTime.now().toString()),
+        Message("User17", "body", LocalDateTime.now().toString()),
+        Message("User18", "body", LocalDateTime.now().toString()),
+        Message("User19", "body", LocalDateTime.now().toString()),
+        Message("User20", "body", LocalDateTime.now().toString()),
+        Message("User21", "body", LocalDateTime.now().toString()),
+        Message("User22", "body", LocalDateTime.now().toString()),
+        Message("User23", "body", LocalDateTime.now().toString()),
+        Message("User24", "body", LocalDateTime.now().toString()),
+        Message("User25", "body", LocalDateTime.now().toString()),
+        Message("User26", "body", LocalDateTime.now().toString()),
+        Message("User27", "body", LocalDateTime.now().toString()),
+        Message("User28", "body", LocalDateTime.now().toString()),
+        Message("User29", "body", LocalDateTime.now().toString()),
+        Message("User30", "body", LocalDateTime.now().toString()),
+        Message("User31", "body", LocalDateTime.now().toString()),
+        Message("User32", "body", LocalDateTime.now().toString()),
+        Message("User33", "body", LocalDateTime.now().toString()),
+        Message("User34", "body", LocalDateTime.now().toString()),
+    )
+
+    @Composable
+    fun ConversationScreen() {
+        val scope = rememberCoroutineScope()
+
+        val lazyListState = rememberLazyListState() // State hoisted to the ConversationScreen
+
+        Row {
+            MessagesList(messages, lazyListState) // Reuse same state in MessageList
+
+            UserInput(
+                onMessageSent = { // Apply UI logic to lazyListState
+                    scope.launch {
+                        lazyListState.scrollToItem(messages.size)
+                    }
+                }
+            )
+        }
+    }
+
+    @Composable
+    private fun MessagesList(
+        messages: List<Message>,
+        lazyListState: LazyListState = rememberLazyListState() // LazyListState has a default value
+    ) {
+        LazyColumn(
+            state = lazyListState // Pass hoisted state to LazyColumn
+        ) {
+            items(messages, key = { message -> message.id }) {
+                Text(
+                    modifier = Modifier.padding(4.dp),
+                    text = "That ${it.id} "
+                )
+            }
+        }
+
+        val scope = rememberCoroutineScope()
+
+        JumpToBottom(onClicked = {
+            scope.launch {
+                lazyListState.scrollToItem(0) // UI logic being applied to lazyListState
+            }
+        })
+
+    }
+
+    @Composable
+    fun UserInput(onMessageSent: () -> Unit) {
+        Button(
+            onClick =
+            onMessageSent
+        ) {
+            Text(text = "Send Message")
+        }
+    }
+
+    @Composable
+    fun JumpToBottom(onClicked: () -> Unit) {
+        Button(onClick = onClicked) {
+            Text(text = "Jump Message")
+        }
+    }
+
+    data class Message(var id: String = "", var content: String = "", var timestamp: String = "")
     
-
 
 
 }
