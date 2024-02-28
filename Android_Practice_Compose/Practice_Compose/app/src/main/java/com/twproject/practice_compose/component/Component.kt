@@ -1,12 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+
 package com.twproject.practice_compose.component
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.graphics.Bitmap
 import android.media.Image
-import android.os.Message
-import android.os.Parcelable
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -16,10 +15,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -27,15 +26,22 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -43,28 +49,32 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import com.twproject.practice_compose.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -689,6 +699,8 @@ object Component {
         }
     }
 
+    data class Message(val id:String, val body: String, val dateTime: String)
+
     @Composable
     private fun MessagesList(
         messages: List<Message>,
@@ -732,8 +744,42 @@ object Component {
         }
     }
 
-    data class Message(var id: String = "", var content: String = "", var timestamp: String = "")
-    
+    @Composable
+    fun MyAppTopAppBar(topAppBarText: String, onBackPressed: () -> Unit) {
+        TopAppBar(
+            title = {
+                Text(
+                    text = topAppBarText,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center)
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick =  onBackPressed) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "BackButton"
+                    )
+                }
+            }
+        )
+    }
+
+    @Composable
+    fun FruitText(fruitSize: Int) {
+        // Get `resources` from the current value of LocalContext
+        val resources = LocalContext.current.resources
+        val fruitText = remember(resources, fruitSize) {
+            resources.getString(R.string.app_name)
+        }
+        Text(
+            text = fruitText
+        )
+    }
+
+
 
 
 }
