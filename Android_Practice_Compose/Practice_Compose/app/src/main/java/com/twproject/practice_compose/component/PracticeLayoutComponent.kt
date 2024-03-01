@@ -183,11 +183,27 @@ object PracticeLayoutComponent {
             modifier = Modifier.fillMaxSize()
                 .size(50.dp)
         )
-
-
     }
 
+    @Composable
+    fun ImageMap() {
 
+        Image(
+            R.drawable.refrigerator,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+                .size(50.dp)
+        )
+    }@Composable
+    fun ImageMap() {
+
+        Image(
+            R.drawable.refrigerator,
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize()
+                .size(50.dp)
+        )
+    }
 
 
 }
