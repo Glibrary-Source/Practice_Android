@@ -176,48 +176,19 @@ object PracticeLayoutComponent {
 
     @Composable
     fun ImageMap() {
-        Image(
-            R.drawable.refrigerator,
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize()
-                .size(50.dp)
-        )
+        Row {
+            Image(
+                R.drawable.refrigerator,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .size(50.dp)
+            )
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text(text = "testText")
+            }
+        }
     }
-
-    Image(
-    painterResource(R.drawable.hero),
-    contentDescription = null,
-    Modifier
-    .clip(CircleShape)
-    .padding(10.dp)
-    .size(100.dp)
-    )
-    Image(
-    painterResource(R.drawable.hero),
-    contentDescription = null,
-    Modifier
-    .clip(CircleShape)
-    .padding(10.dp)
-    .size(100.dp)
-    )
-    Image(
-    painterResource(R.drawable.hero),
-    contentDescription = null,
-    Modifier
-    .clip(CircleShape)
-    .padding(10.dp)
-    .size(100.dp)
-    )
-    Image(
-    painterResource(R.drawable.hero),
-    contentDescription = null,
-    Modifier
-    .clip(CircleShape)
-    .padding(10.dp)
-    .size(100.dp)
-    )
-
-
 
 
 }
