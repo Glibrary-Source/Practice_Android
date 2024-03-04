@@ -1,35 +1,58 @@
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+
 package com.twproject.practice_compose.component
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.twproject.practice_compose.R
@@ -48,7 +71,10 @@ object PracticeLayoutComponent {
 //            Log.d("TestModifier", "yesMD")
 //        }
 //        WithConstraintsComposable()
-        HomeScreen()
+//        HomeScreen()
+//        ImageMap()
+//        HorizontalPager()
+        TestFlow()
     }
 
     @Composable
@@ -159,7 +185,6 @@ object PracticeLayoutComponent {
         }
     }
 
-
     @Composable
     fun HomeScreen(/*...*/) {
         ModalNavigationDrawer(drawerContent = { /* ... */ }) {
@@ -174,18 +199,69 @@ object PracticeLayoutComponent {
         }
     }
 
+//    @Composable
+//    fun ImageMap() {
+//        Row {
+//            Image(
+//                painterResource(id = R.drawable.refrigerator),
+//                contentDescription = null,
+//                //modifier 수정자도 계층이 있음 옵션 순서에따라 적용이 다름
+//                modifier = Modifier.myBackground(colorResource(id = R.color.onPrimary))
+//            )
+//            Column(modifier = Modifier.padding(8.dp)) {
+//                Text(text = "testText")
+//            }
+//        }
+//    }
+
+    // 수정자(Modifier) 커스텀 사용 예시
+//    fun Modifier.clip(shape: Shape) = graphicsLayer(shape = shape, clip = true)
+//    fun Modifier.myBackground(color: Color) = padding(16.dp)
+//        .clip(RoundedCornerShape(8.dp))
+//        .background(color)
+//    fun Modifier.fade(enable: Boolean): Modifier {
+//        val alpha by animateFloatAsState(if (enable) 0.5f else 1.0f, label = "test")
+//        return this then Modifier.graphicsLayer { this.alpha = alpha }
+//    }
+//
+//    @Composable
+//    fun Modifier.fadedBackground(): Modifier {
+//        val color = LocalContentColor.current
+//        return this then Modifier.background(color.copy(alpha = 0.5f))
+//    }
+
     @Composable
-    fun ImageMap() {
-        Row {
-            Image(
-                R.drawable.refrigerator,
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .size(50.dp)
-            )
-            Column(modifier = Modifier.padding(8.dp)) {
-                Text(text = "testText")
+    fun HorizontalPager() {
+        val itemList = (0..9).toList()
+        LazyRow {
+            items(itemList) {
+                Text(
+                    text = "Item is $it",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(10.dp)
+                )
+            }
+        }
+    }
+
+    @Composable
+    fun TestFlow() {
+        val rows = 3
+        val columns = 3
+        FlowRow(
+            modifier = Modifier.padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            maxItemsInEachRow = rows
+        ) {
+            val itemModifier = Modifier
+                .padding(4.dp)
+                .height(80.dp)
+                .weight(1f)
+                .clip(RoundedCornerShape(8.dp))
+                .background(MaterialTheme.colorScheme.onBackground)
+            repeat(rows * columns) {
+                Spacer(modifier = itemModifier)
             }
         }
     }
