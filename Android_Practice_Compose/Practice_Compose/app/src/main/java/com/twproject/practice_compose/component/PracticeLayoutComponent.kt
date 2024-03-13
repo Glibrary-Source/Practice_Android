@@ -229,7 +229,7 @@ object PracticeLayoutComponent {
 //        val color = LocalContentColor.current
 //        return this then Modifier.background(color.copy(alpha = 0.5f))
 //    }
-
+// 주석 테스트 추가
     @Composable
     fun HorizontalPager() {
         val itemList = (0..9).toList()
